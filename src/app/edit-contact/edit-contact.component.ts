@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Contact } from '../contacts/contact.model';
 import { ContactsService } from '../contacts/contacts.service';
+import { phoneTypeValues } from '../contacts/contact.model';
+import { addressTypeValues } from './../contacts/contact.model';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -12,12 +14,15 @@ import { ContactsService } from '../contacts/contacts.service';
   styleUrls: ['./edit-contact.component.css'],
 })
 export class EditContactComponent implements OnInit {
+  phoneTypes = phoneTypeValues;
+  addressTypes = addressTypeValues;
   contact: Contact = {
     id: '',
+    personal: false,
     firstName: '',
     lastName: '',
-    dateOfBirth: null,
-    favoritesRanking: null,
+    dateOfBirth: '',
+    favoritesRanking: 0,
     phone: {
       phoneNumber: '',
       phoneType: '',
@@ -29,6 +34,7 @@ export class EditContactComponent implements OnInit {
       postalCode: '',
       addressType: '',
     },
+    notes: '',
   };
 
   constructor(
@@ -46,6 +52,8 @@ export class EditContactComponent implements OnInit {
   }
 
   saveContact(form: NgForm) {
+    console.log(this.contact.dateOfBirth, typeof this.contact.dateOfBirth);
+
     this.contactsService.saveContact(form.value).subscribe({
       next: () => this.router.navigate(['/contacts']),
     });
